@@ -32,10 +32,10 @@
   <div class="dialog"></div>
 </div>
 
-<!-- <button type="submit" id="send-me" class="btn btn-primary">me</button>
-<button type="submit" id="send-room" class="btn btn-primary">room</button> -->
 <%- include('./port/layout-end') %>
 <script>
+  const socket = io.connect('/');
+
   const myBtn = document.querySelector('.btn-message');
   const dialog = document.querySelector('.dialog');
   const username = document.querySelector('.username');
@@ -52,13 +52,19 @@
         `;
     };
 
-  myBtn.addEventListener('click', () => {
-    console.log('Yioyoyo77777777799');
-    const msg = {
-      username: username.value,
-      message: message.value,
-    }
-    const div = templateMessage(msg);
-    dialog.insertAdjacentHTML('beforeend', div)
-  });
+  socket.on('message-to-all', (msg) => {
+        console.log('socketON === message-to-all');
+        const div = templateMessage(msg);
+        dialog.insertAdjacentHTML('beforeend', div);
+        message.value = '';
+    });
+
+    myBtn.addEventListener('click', () => {
+        console.log('click === message-to-all');
+        socket.emit('message-to-all', {
+            username: username.value,
+            message: message.value,
+        });
+    })
+    
 </script>
