@@ -1,0 +1,57 @@
+services:
+  mongo:
+    image: mongo
+    restart: always
+    volumes:
+      - ./data-mongodb:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+  storage:
+    image: redis
+    volumes:
+      - ./data:/data
+  books:
+    image: node:15.6
+    volumes:
+      - ./:/app
+    working_dir: /app
+    environment:
+      - PORT=3000
+      - REDIS_URL=redis://storage
+      - MONGO_URL=mongodb://mongo:27017
+      - MONGO_URL2=mongodb://root:example@mongo:27017
+      - MONGODB_NAME=booksstor
+      - SECONDAPP_URL=http://secondapp:4000/counter
+    ports:
+      - 3000:3000
+    command: npm run dev
+    depends_on:
+      - storage
+      - mongo
+      - mongo-express
+  secondapp:
+    image: node:15.6
+    volumes:
+      - ./secondapp:/app
+    working_dir: /app
+    environment:
+      - PORT=4000
+      - REDIS_URL=redis://storage
+    ports:
+      - 4000:4000
+    command: npm run dev
+    depends_on:
+      - storage
+      - mongo
+      - mongo-express

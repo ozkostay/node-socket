@@ -1,0 +1,27 @@
+<%- include('./port/layout-start', {title: title}) %>
+
+<main class="main-conteiner">
+  
+  <% store.map ((el, idx) => { %>
+  <table class="table-items">
+    <tr>
+      <td style="width: 20px"><%=idx + 1%>.</td>
+      <td style="width: 400px" class="el-title">
+        <a href="/view/<%=el._id%>"><%=el.title%></a>
+      </td>
+      <td style="width: 40px">
+        <a class="edit" href="/update/<%=el._id%>"
+          >Редактировать</a
+        >
+      </td>
+      <td style="width: 40px">
+        <form method="POST" action="/delete/<%=el._id%>">
+          <button class="delete">Удалить</button>
+        </form>
+      </td>
+    </tr>
+  </table>
+  <% }); %>
+</main>
+
+<%- include('./port/layout-end') %>

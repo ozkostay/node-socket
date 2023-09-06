@@ -1,0 +1,6 @@
+43:24 nodemon
+45:31 монтаж - сборка   46:27docker
+59:47 Публикация
+1:09:05 docker tag
+1:28 compose
+1:49 redis

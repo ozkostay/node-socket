@@ -1,0 +1,64 @@
+<%- include('./port/layout-start', {title: title}) %>
+<div class="view-fields">
+  Название: <span class="bold"><%= item.title %></span>
+</div>
+<div class="view-fields">Описание: <%= item.description %></div>
+<div class="view-fields">Автор: <%= item.authors %></div>
+<div class="view-fields">favorite: <%= item.favorite %></div>
+<div class="view-fields">Обложка: <%= item.fileCover %></div>
+<div class="view-fields">Количество просмотров: <%= cnt %></div>
+
+<div class="dialog-wrapper">
+  <div class="form">
+    <div class="form-group">
+      <label for="username" class="label-view">Пользователь</label>
+      <input
+              placeholder="username"
+              type="text"
+              id="username"
+              class="username"
+      >
+    </div>
+    <div class="form-group">
+      <label for="text" class="label-view">Сообщение</label>
+      <textarea
+              placeholder="message"
+              class="message"
+              id="text"
+      ></textarea>
+    </div>
+    <button type="submit" id="send-all" class="btn-message">Отправить</button>
+  </div>
+  <div class="dialog"></div>
+</div>
+
+<!-- <button type="submit" id="send-me" class="btn btn-primary">me</button>
+<button type="submit" id="send-room" class="btn btn-primary">room</button> -->
+<%- include('./port/layout-end') %>
+<script>
+  const myBtn = document.querySelector('.btn-message');
+  const dialog = document.querySelector('.dialog');
+  const username = document.querySelector('.username');
+  const message = document.querySelector('.message');
+  
+  const templateMessage = (msg) => {
+        return `
+                <div class="msg-in-dialog">
+                    <div class="msg-name">
+                        <small>${msg.username}</small>
+                    </div>
+                    <p class="mb-1">${msg.message}</p>
+                </div>
+        `;
+    };
+
+  myBtn.addEventListener('click', () => {
+    console.log('Yioyoyo77777777799');
+    const msg = {
+      username: username.value,
+      message: message.value,
+    }
+    const div = templateMessage(msg);
+    dialog.insertAdjacentHTML('beforeend', div)
+  });
+</script>
